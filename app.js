@@ -1,3 +1,65 @@
+Vue.component('TarjetaDeAtributo', {
+   template: `
+   <div>
+      <div class="card m-2" style="width: 18rem;">
+         <div class="card-body">
+         <h5 class="card-title">
+            <div class="row">
+               <div class="col">
+               <strong>{{ atributo.nombre }}</strong>
+               </div>
+               <div class="col text-right">
+               <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+               <a @click="removeAtributo(atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+               </div>
+            </div>
+         </h5>
+         </div>
+         <ul class="list-group list-group-flush">
+            <li class="list-group-item" v-for="(valor, pos) in atributo.valores" :key="pos">
+               <div class="row">
+                  <div class="col">
+                  {{ valor }}
+                  </div>
+                  <div class="col">
+                  <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                  <a href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                  </div>
+               </div>
+            </li>
+            <li class="list-group-item">
+               <form>
+                  <div class="form-group text-center">
+                  <div class="input-group mb-2">
+                     <input type="text" class="form-control" placeholder="Nuevo Valor...">
+                     <div class="input-group-append">
+                        <div class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></div>
+                     </div>
+                  </div>
+                  </div>
+               </form>
+            </li>
+         </ul>
+      </div>
+   </div>
+   `,
+   data(){
+      return {
+
+      }
+   },
+
+   props: ['atributo', 'removeAtributo'],
+
+   methods: {
+
+   }
+})
+
+
+
+
+
 
 const appVue = new Vue({
   el: '#appVue',
