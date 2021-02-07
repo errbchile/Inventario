@@ -38,8 +38,8 @@ Vue.component('TarjetaDeAtributo', {
                   {{ valor }}
                   </div>
                   <div class="col">
-                  <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                  <a @click="removeValue(valor, atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                     <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                     <a @click="removeValue(valor, atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                   </div>
                </div>
             </li>
@@ -225,6 +225,11 @@ const appVue = new Vue({
                atributo.valores = atributo.valores.filter(valor => valor !== request.value)
             }
          })
+      },
+
+      removeProductNameRegistered(nombre){
+         this.registroDePlantillas = this.registroDePlantillas.filter(producto => producto.nombreProducto !== nombre);
+         this.nombreDeProductosRegistrados = this.nombreDeProductosRegistrados.filter(producto => producto.nombreProducto !== nombre);
       }
    }, // end methods
 
