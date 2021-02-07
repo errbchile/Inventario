@@ -396,6 +396,31 @@
                     <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
                   </div>
                   <h5 class="text-center">Atributos</h5>
+                  <div class="form-group text-center">
+                    <label class="sr-only">Nombre del Atributo Nuevo</label>
+                    <div class="input-group mb-2">
+                      <input v-model="newAtributo.nombre" type="text" class="form-control" placeholder="Nuevo Atributo...">
+                      <div class="input-group-append">
+                        <button :disabled="atributoNoValidoParaSerAgregado" @click="handleNewAtributo" class="input-group-text btn btn-outline-success">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <small v-if="atributoNoValidoParaSerAgregado" class="text-danger">El Atributo {{ newAtributo.nombre }} no es válido...</small>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-col" v-for="(atributo, index) in newProducto.atributos" :key="index">
+                      <!-- TARJETAS - producto registrado -->
+                      <tarjeta-de-atributo 
+                        :atributo="atributo"
+                        :remove-atributo="removeAtributo"
+                      />
+                      <!-- /TARJETAS - producto registrado -->
+                    </div>
+                  </div>
+
+                  
                 </form>
                 <!-- /PRODUCTO NUEVO -->
   

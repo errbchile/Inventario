@@ -61,6 +61,8 @@ Vue.component('TarjetaDeAtributo', {
 
 
 
+
+
 const appVue = new Vue({
   el: '#appVue',
   data: {
@@ -118,6 +120,10 @@ const appVue = new Vue({
         this.productoEnRegistroDePlantillas = false;
         this.agregarNuevoNombreDeProducto = false;
         this.agregarNombreDeProductoExistente = false;
+        this.newProducto = {
+         nombreProducto: '',
+         atributos: []
+       };
       }
     },
 
@@ -129,6 +135,7 @@ const appVue = new Vue({
     verProductoNuevo(){
       this.newProducto.nombreProducto = this.buscarNombreProducto;
       this.agregarNuevoNombreDeProducto = true;
+      this.registroDePlantillas.push(this.newProducto);
     },
 
     handleNewAtributo(){
