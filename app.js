@@ -39,7 +39,7 @@ Vue.component('TarjetaDeAtributo', {
                   </div>
                   <div class="col">
                   <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                  <a href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                  <a @click="removeValue(valor, atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                   </div>
                </div>
             </li>
@@ -81,8 +81,16 @@ Vue.component('TarjetaDeAtributo', {
          }
          this.$emit('new-valor', obj);
          this.newValor = "";
+      },
+
+      removeValue(value, atributo){
+         let obj = {
+            value,
+            atributo
+         }
+         this.$emit('remove-valor', obj);
       }
-   }
+   } // end Methods
 })
 
 
@@ -207,6 +215,14 @@ const appVue = new Vue({
          this.newProducto.atributos.map(atributo => {
             if (atributo.nombre === request.atributoNombre) {
                atributo.valores.push(request.newValor);
+            }
+         })
+      },
+
+      removeIncomingValue(request){
+         this.newProducto.atributos.map(atributo => {
+            if (atributo.nombre === request.atributo) {
+               atributo.valores = atributo.valores.filter(valor => valor !== request.value)
             }
          })
       }
