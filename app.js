@@ -47,9 +47,9 @@ Vue.component('TarjetaDeAtributo', {
                <form>
                   <div class="form-group text-center">
                   <div class="input-group mb-2">
-                     <input type="text" class="form-control" placeholder="Nuevo Valor...">
+                     <input v-model="newValor" type="text" class="form-control" placeholder="Nuevo Valor...">
                      <div class="input-group-append">
-                        <div class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></div>
+                        <button @click="handleValor(atributo.nombre)" class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></button>
                      </div>
                   </div>
                   </div>
@@ -62,14 +62,26 @@ Vue.component('TarjetaDeAtributo', {
    data(){
       return {
          atributoEnEdicion: false,
-         newAtributo: ""
+         newAtributo: "",
+         newValor: ""
       }
    },
 
    props: ['atributo', 'removeAtributo'],
 
    methods: {
+      handleValor(atributoNombre){
+         if (this.newValor === "") {
+            return;
+         }
 
+         let obj = {
+            atributoNombre,
+            newValor: this.newValor
+         }
+         this.$emit('new-valor', obj);
+         this.newValor = "";
+      }
    }
 })
 
@@ -81,127 +93,135 @@ Vue.component('TarjetaDeAtributo', {
 
 
 const appVue = new Vue({
-  el: '#appVue',
-  data: {
-    registroDePlantillas: [
-      {
-        nombreProducto: 'Pestaña',
-        atributos: [
-          {
-            nombre: 'Medida',
-            valores: ['0.05', '0.07', '0.20']
-          },
-          {
-            nombre: 'Color',
-            valores: ['Rojo', 'Negro', 'Transparente']
-          }
-        ],
-      }
-    ],
+   el: '#appVue',
+   data: {
+      registroDePlantillas: [
+         {
+            nombreProducto: 'Pestaña',
+            atributos: [
+               {
+                  nombre: 'Medida',
+                  valores: ['0.05', '0.07', '0.20']
+               },
+               {
+                  nombre: 'Color',
+                  valores: ['Rojo', 'Negro', 'Transparente']
+               }
+            ],
+         }
+      ],
 
-    buscarNombreProducto: "",
+      buscarNombreProducto: "",
 
-    newProducto: {
-      nombreProducto: '',
-      atributos: []
-    },
-
-    newAtributo: {
-      nombre: '',
-      valores: []
-    },
-
-    atributoEnModoEdicion: false,
-
-    productoEnRegistroDePlantillas: false,
-    nombreDeProductosRegistrados: [],
-    agregarNuevoNombreDeProducto: false,
-    agregarNombreDeProductoExistente: false,
-    atributoNoValidoParaSerAgregado: false
-  },
-
-  methods: {
-    findProduct() {
-      if (this.buscarNombreProducto.length > 2) {
-        let existe = false;
-        let nombres = [];
-        this.registroDePlantillas.map(producto => {
-          if ( ( producto.nombreProducto.toLowerCase() ).includes( (this.buscarNombreProducto).toLowerCase() ) ) {
-            existe = true;
-            nombres.push(producto);
-          }
-        })
-        this.nombreDeProductosRegistrados = nombres;
-        this.productoEnRegistroDePlantillas = existe;
-      } else {
-        this.productoEnRegistroDePlantillas = false;
-        this.agregarNuevoNombreDeProducto = false;
-        this.agregarNombreDeProductoExistente = false;
-        this.newProducto = {
+      newProducto: {
          nombreProducto: '',
          atributos: []
-       };
+      },
+
+      newAtributo: {
+         nombre: '',
+         valores: []
+      },
+
+      atributoEnModoEdicion: false,
+
+      productoEnRegistroDePlantillas: false,
+      nombreDeProductosRegistrados: [],
+      agregarNuevoNombreDeProducto: false,
+      agregarNombreDeProductoExistente: false,
+      atributoNoValidoParaSerAgregado: false
+   },
+
+   methods: {
+      findProduct() {
+         if (this.buscarNombreProducto.length > 2) {
+            let existe = false;
+            let nombres = [];
+            this.registroDePlantillas.map(producto => {
+               if ( ( producto.nombreProducto.toLowerCase() ).includes( (this.buscarNombreProducto).toLowerCase() ) ) {
+                  existe = true;
+                  nombres.push(producto);
+               }
+            })
+            this.nombreDeProductosRegistrados = nombres;
+            this.productoEnRegistroDePlantillas = existe;
+         } else {
+            this.productoEnRegistroDePlantillas = false;
+            this.agregarNuevoNombreDeProducto = false;
+            this.agregarNombreDeProductoExistente = false;
+            this.newProducto = {
+               nombreProducto: '',
+               atributos: []
+            };
+         }
+      },
+
+      verProductoRegistrado(producto){
+         this.newProducto = producto;
+         this.agregarNombreDeProductoExistente = true;
+      },
+
+      verProductoNuevo(){
+         this.newProducto.nombreProducto = this.buscarNombreProducto;
+         this.agregarNuevoNombreDeProducto = true;
+         this.registroDePlantillas.push(this.newProducto);
+      },
+
+      handleNewAtributo(){
+         if (this.newAtributo.nombre === "") {
+            return;
+         }
+
+         if ( this.atributoValido(this.newAtributo.nombre) ) {
+            this.addNewAtributoValido(this.newAtributo.nombre); 
+         } else {
+            this.atributoNoValidoParaSerAgregado = true;
+            setTimeout(() => {
+               this.atributoNoValidoParaSerAgregado = false;
+            }, 3000);
+         }
+      },
+
+      atributoValido(nombre){
+         for (let i = 0; i < this.newProducto.atributos.length; i++) {
+            if (this.newProducto.atributos[i].nombre === nombre) {
+               return false;
+            }
+         }
+         return true;
+      },
+
+      addNewAtributoValido(nombre){
+         this.newProducto.atributos.push({
+            nombre: nombre,
+            valores: []
+         });
+         this.newAtributo.nombre = "";
+      },
+
+      removeAtributo(name){
+         this.newProducto.atributos = this.newProducto.atributos.filter(atributo => atributo.nombre !== name);
+      },
+
+      handleValor(request){
+         this.newProducto.atributos.map(atributo => {
+            if (atributo.nombre === request.atributoNombre) {
+               atributo.valores.push(request.newValor);
+            }
+         })
       }
-    },
+   }, // end methods
 
-    verProductoRegistrado(producto){
-      this.newProducto = producto;
-      this.agregarNombreDeProductoExistente = true;
-    },
 
-    verProductoNuevo(){
-      this.newProducto.nombreProducto = this.buscarNombreProducto;
-      this.agregarNuevoNombreDeProducto = true;
-      this.registroDePlantillas.push(this.newProducto);
-    },
-
-    handleNewAtributo(){
-      if (this.newAtributo.nombre === "") {
-        return;
+   watch: {
+      newProducto: function(newVal) {
+         this.registroDePlantillas = this.registroDePlantillas.map(producto => {
+            if (producto.nombreProducto === this.newProducto.nombreProducto) {
+               return newVal;
+            }
+            return producto;
+         })
       }
-
-      if ( this.atributoValido(this.newAtributo.nombre) ) {
-       this.addNewAtributoValido(this.newAtributo.nombre); 
-      } else {
-        this.atributoNoValidoParaSerAgregado = true;
-        setTimeout(() => {
-          this.atributoNoValidoParaSerAgregado = false;
-        }, 3000);
-      }
-    },
-
-    atributoValido(nombre){
-      for (let i = 0; i < this.newProducto.atributos.length; i++) {
-        if (this.newProducto.atributos[i].nombre === nombre) {
-          return false;
-        }
-      }
-      return true;
-    },
-
-    addNewAtributoValido(nombre){
-      this.newProducto.atributos.push({
-        nombre: nombre,
-        valores: []
-      });
-      this.newAtributo.nombre = "";
-    },
-
-    removeAtributo(name){
-      this.newProducto.atributos = this.newProducto.atributos.filter(atributo => atributo.nombre !== name);
-    }
-  }, // end methods
-
-
-  watch: {
-    newProducto: function(newVal) {
-      this.registroDePlantillas = this.registroDePlantillas.map(producto => {
-        if (producto.nombreProducto === this.newProducto.nombreProducto) {
-          return newVal;
-        }
-        return producto;
-      })
-    }
-  } // end watch
+   } // end watch
 
 })
