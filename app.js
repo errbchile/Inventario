@@ -230,6 +230,11 @@ const appVue = new Vue({
       removeProductNameRegistered(nombre){
          this.registroDePlantillas = this.registroDePlantillas.filter(producto => producto.nombreProducto !== nombre);
          this.nombreDeProductosRegistrados = this.nombreDeProductosRegistrados.filter(producto => producto.nombreProducto !== nombre);
+         this.newProducto = {
+            nombreProducto: '',
+            atributos: []
+         };
+         this.agregarNombreDeProductoExistente = false;
       }
    }, // end methods
 

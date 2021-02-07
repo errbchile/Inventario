@@ -371,8 +371,6 @@
                 <li v-for="(producto, index) in nombreDeProductosRegistrados" :key="index">
                   <a href="#" @click.prevent="verProductoRegistrado(producto)">
                     Ver <strong>{{ producto.nombreProducto }}</strong>
-                    <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                    <a @click="removeProductNameRegistered(producto.nombreProducto)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                   </a>
                 </li>
               </ul>
@@ -431,10 +429,15 @@
                 <!-- PRODUCTO REGISTRADO -->
                 <form v-else-if="agregarNombreDeProductoExistente">
                   <div class="form-group text-center">
-                    <label class="text-center">Nombre del Producto Registrado</label>
-                    <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
+                    <label class="sr-only">Nombre del Atributo Nuevo</label>
+                    <div class="input-group mb-2">
+                      <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
+                      <div class="input-group-append">
+                        <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                        <a @click="removeProductNameRegistered(newProducto.nombreProducto)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                      </div>
+                    </div>
                   </div>
-                  <h5 class="text-center">Atributos</h5>
                   <div class="form-group text-center">
                     <label class="sr-only">Nombre del Atributo Nuevo</label>
                     <div class="input-group mb-2">
