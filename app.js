@@ -4,15 +4,31 @@ Vue.component('TarjetaDeAtributo', {
       <div class="card m-2" style="width: 18rem;">
          <div class="card-body">
          <h5 class="card-title">
-            <div class="row">
+            <div class="row" v-if="!atributoEnEdicion">
                <div class="col">
-               <strong>{{ atributo.nombre }}</strong>
+                  <strong>{{ atributo.nombre }}</strong>
                </div>
                <div class="col text-right">
-               <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-               <a @click="removeAtributo(atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                  <a @click="atributoEnEdicion = !atributoEnEdicion" href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                  <a @click="removeAtributo(atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                </div>
             </div>
+
+            <div class="row" v-else-if="atributoEnEdicion">
+               <div class="col">
+                  <form>
+                     <div class="form-group text-center">
+                     <div class="input-group mb-2">
+                        <input v-model="atributo.nombre" type="text" class="form-control">
+                        <div class="input-group-append">
+                           <button @click="atributoEnEdicion = !atributoEnEdicion" class="input-group-text btn btn-outline-danger"><i class="fas fa-times-circle"></i></button>
+                        </div>
+                     </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+
          </h5>
          </div>
          <ul class="list-group list-group-flush">
@@ -45,7 +61,8 @@ Vue.component('TarjetaDeAtributo', {
    `,
    data(){
       return {
-
+         atributoEnEdicion: false,
+         newAtributo: ""
       }
    },
 
