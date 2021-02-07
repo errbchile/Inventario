@@ -49,7 +49,7 @@ Vue.component('TarjetaDeAtributo', {
                   <div class="input-group mb-2">
                      <input v-model="newValor" type="text" class="form-control" placeholder="Nuevo Valor...">
                      <div class="input-group-append">
-                        <button @click="handleValor(atributo.nombre)" class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></button>
+                        <button @click="handleNewValor(atributo.nombre)" class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></button>
                      </div>
                   </div>
                   </div>
@@ -70,7 +70,7 @@ Vue.component('TarjetaDeAtributo', {
    props: ['atributo', 'removeAtributo'],
 
    methods: {
-      handleValor(atributoNombre){
+      handleNewValor(atributoNombre){
          if (this.newValor === "") {
             return;
          }
@@ -203,7 +203,7 @@ const appVue = new Vue({
          this.newProducto.atributos = this.newProducto.atributos.filter(atributo => atributo.nombre !== name);
       },
 
-      handleValor(request){
+      handleNewValor(request){
          this.newProducto.atributos.map(atributo => {
             if (atributo.nombre === request.atributoNombre) {
                atributo.valores.push(request.newValor);
