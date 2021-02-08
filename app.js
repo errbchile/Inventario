@@ -9,8 +9,8 @@ Vue.component('TarjetaDeAtributo', {
                   <strong>{{ atributo.nombre }}</strong>
                </div>
                <div class="col text-right">
-                  <a @click="atributoEnEdicion = !atributoEnEdicion" href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                  <a @click="removeAtributo(atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                  <a @click.prevent="atributoEnEdicion = !atributoEnEdicion" href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                  <a @click.prevent="removeAtributo(atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                </div>
             </div>
 
@@ -21,7 +21,7 @@ Vue.component('TarjetaDeAtributo', {
                      <div class="input-group mb-2">
                         <input v-model="atributo.nombre" type="text" class="form-control">
                         <div class="input-group-append">
-                           <button @click="atributoEnEdicion = !atributoEnEdicion" class="input-group-text btn btn-outline-danger"><i class="fas fa-times-circle"></i></button>
+                           <button @click.prevent="atributoEnEdicion = !atributoEnEdicion" class="input-group-text btn btn-outline-danger"><i class="fas fa-times-circle"></i></button>
                         </div>
                      </div>
                      </div>
@@ -39,7 +39,7 @@ Vue.component('TarjetaDeAtributo', {
                   </div>
                   <div class="col">
                      <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                     <a @click="removeValue(valor, atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                     <a @click.prevent="removeValue(valor, atributo.nombre)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
                   </div>
                </div>
             </li>
@@ -49,7 +49,7 @@ Vue.component('TarjetaDeAtributo', {
                   <div class="input-group mb-2">
                      <input v-model="newValor" type="text" class="form-control" placeholder="Nuevo Valor...">
                      <div class="input-group-append">
-                        <button @click="handleNewValor(atributo.nombre)" class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></button>
+                        <button @click.prevent="handleNewValor(atributo.nombre)" class="input-group-text btn btn-outline-success"><i class="fa fa-plus"></i></button>
                      </div>
                   </div>
                   </div>
