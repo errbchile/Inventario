@@ -269,6 +269,10 @@ const appVue = new Vue({
             montoTotalPagado: null,
             costoPorUnidad: null,
          };
+      },
+
+      handleCompraRegistrada(id){
+         this.comprasRegistradas = this.comprasRegistradas.filter(compra => compra.id !== id);
       }
    }, // end methods
 

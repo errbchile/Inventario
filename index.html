@@ -558,6 +558,65 @@
                   </div>
                 </div>
               </div>
+
+
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary text-center">Compras Registradas</h6>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Características</th>
+                        <th>Cantidad</th>
+                        <th>Costo Total</th>
+                        <th>Costo Unitario</th>
+                        <th>Fecha</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Características</th>
+                        <th>Cantidad</th>
+                        <th>Costo Total</th>
+                        <th>Costo Unitario</th>
+                        <th>Fecha</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <tr v-for="(compra, index) in comprasRegistradas">
+                        <td>{{ compra.id }}</td>
+                        <td>{{ compra.productoSeleccionadoParaComprar }}</td>
+                        <td>Atributos</td>
+                        <td>{{ compra.cantidadItemsEnCompra }}</td>
+                        <td>{{ compra.montoTotalPagado }}</td>
+                        <td>{{ compra.costoPorUnidad }}</td>
+                        <td>{{ compra.fecha }}</td>
+                        <td>{{ compra.status }}</td>
+                        <td>
+                          <a @click.prevent="handleCompraRegistrada(compra.id)" class="btn btn-outline-danger btn-sm" href="#">Eliminar</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+
               <!-- /COMPRAS-CONTENT -->
             </div>
 
