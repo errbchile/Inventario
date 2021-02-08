@@ -137,7 +137,8 @@ const appVue = new Vue({
       nombreDeProductosRegistrados: [],
       agregarNuevoNombreDeProducto: false,
       agregarNombreDeProductoExistente: false,
-      atributoNoValidoParaSerAgregado: false
+      atributoNoValidoParaSerAgregado: false,
+
    },
 
    methods: {
@@ -235,7 +236,7 @@ const appVue = new Vue({
             atributos: []
          };
          this.agregarNombreDeProductoExistente = false;
-      }
+      },
    }, // end methods
 
 

@@ -349,128 +349,192 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Registrar Producto</h1>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="configuracion-tab" data-toggle="tab" href="#configuracion" role="tab" aria-controls="configuracion" aria-selected="true">Configuracion</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="compras-tab" data-toggle="tab" href="#compras" role="tab" aria-controls="compras" aria-selected="false">Compras</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="inventario-tab" data-toggle="tab" href="#inventario" role="tab" aria-controls="inventario" aria-selected="false">Inventario</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="configuracion" role="tabpanel" aria-labelledby="configuracion-tab">
+            <!-- CONFIGURACION CONTENT -->
+            <div class="container-fluid">
+              <!-- Page Heading -->
+              <div class="d-sm-flex align-items-center justify-content-between m-3">
+                <h1 class="h3 mb-0 text-gray-800 text-center">Configuración</h1>
+              </div>
+
+            
+              
+                <div class="row">
+                  <form>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Nombre del Producto</label>
+                      <input @keyup="findProduct" v-model="buscarNombreProducto" type="text" class="form-control" placeholder="Buscar...">
+                    </div>
+                  </form>
+                </div>
+                <!-- VISTA UNO -->
+                <div class="row">
+                  <!-- producto REGISTRADO -->
+                  <ul v-if="productoEnRegistroDePlantillas">
+                    <li v-for="(producto, index) in nombreDeProductosRegistrados" :key="index">
+                      <a href="#" @click.prevent="verProductoRegistrado(producto)">
+                        Ver <strong>{{ producto.nombreProducto }}</strong>
+                      </a>
+                    </li>
+                  </ul>
+                  <!-- /producto REGISTRADO -->
+                  <!-- producto NUEVO -->
+                  <div v-else-if="!productoEnRegistroDePlantillas && buscarNombreProducto.length > 2">
+                    <a @click.prevent="verProductoNuevo" href="#">
+                      <p>Registrar <strong>{{ buscarNombreProducto }}</strong> como nuevo nombre de producto</p>
+                    </a>
+                  </div>
+                  <!-- /producto NUEVO -->
+                </div>
+                <!-- /VISTA UNO -->
+                
+
+                <!-- VISTA DOS -->
+                <div class="row">
+                  <div class="col-md-10 offset-md-1 text-center">
+                    <!-- PRODUCTO NUEVO -->
+                    <form v-if="agregarNuevoNombreDeProducto">
+                      <div class="form-group text-center">
+                        <label class="text-center">Nuevo Nombre del Producto</label>
+                        <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
+                      </div>
+                      <h5 class="text-center">Atributos</h5>
+                      <div class="form-group text-center">
+                        <label class="sr-only">Nombre del Atributo Nuevo</label>
+                        <div class="input-group mb-2">
+                          <input v-model="newAtributo.nombre" type="text" class="form-control" placeholder="Nuevo Atributo...">
+                          <div class="input-group-append">
+                            <button :disabled="atributoNoValidoParaSerAgregado" @click="handleNewAtributo" class="input-group-text btn btn-outline-success">
+                              <i class="fa fa-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <small v-if="atributoNoValidoParaSerAgregado" class="text-danger">El Atributo {{ newAtributo.nombre }} no es válido...</small>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-col" v-for="(atributo, index) in newProducto.atributos" :key="index">
+                          <!-- TARJETAS - producto registrado -->
+                          <tarjeta-de-atributo 
+                            :atributo="atributo"
+                            :remove-atributo="removeAtributo"
+                            @new-valor="handleNewValor"
+                            @remove-valor="removeIncomingValue"
+                          />
+                          <!-- /TARJETAS - producto registrado -->
+                        </div>
+                      </div>
+
+                      
+                    </form>
+                    <!-- /PRODUCTO NUEVO -->
+      
+                    <!-- PRODUCTO REGISTRADO -->
+                    <form v-else-if="agregarNombreDeProductoExistente">
+                      <div class="form-group text-center">
+                        <label class="sr-only">Nombre del Atributo Nuevo</label>
+                        <div class="input-group mb-2">
+                          <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
+                          <div class="input-group-append">
+                            <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
+                            <a @click="removeProductNameRegistered(newProducto.nombreProducto)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group text-center">
+                        <label class="sr-only">Nombre del Atributo Nuevo</label>
+                        <div class="input-group mb-2">
+                          <input v-model="newAtributo.nombre" type="text" class="form-control" placeholder="Nuevo Atributo...">
+                          <div class="input-group-append">
+                            <button :disabled="atributoNoValidoParaSerAgregado" @click="handleNewAtributo" class="input-group-text btn btn-outline-success">
+                              <i class="fa fa-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <small v-if="atributoNoValidoParaSerAgregado" class="text-danger">El Atributo {{ newAtributo.nombre }} no es válido...</small>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-col" v-for="(atributo, index) in newProducto.atributos" :key="index">
+                          <!-- TARJETAS - producto registrado -->
+                          <tarjeta-de-atributo 
+                            :atributo="atributo"
+                            :remove-atributo="removeAtributo"
+                            @new-valor="handleNewValor"
+                            @remove-valor="removeIncomingValue"
+                          />
+                          <!-- /TARJETAS - producto registrado -->
+                        </div>
+                      </div>
+
+
+                      
+                    </form>
+                    <!-- /PRODUCTO REGISTRADO -->
+                  </div>
+                </div>
+                <!-- /VISTA DOS -->
+
+            </div>
+            <!-- /CONFIGURACION CONTENT -->
+            </div>
+
+            <div class="tab-pane fade" id="compras" role="tabpanel" aria-labelledby="compras-tab">
+              <!-- COMPRAS-CONTENT -->
+              <div class="container-fluid m-3">
+                <div class="row">
+                  <h3 class="text-center">Compras</h3>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <form>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlSelect1">Selecciona el Producto:</label>
+                            <select class="form-control">
+                              <option value="">--Seleccione--</option>
+                              <option v-for="(producto, index) in registroDePlantillas" 
+                                :value="producto.nombreProducto"
+                              >{{ producto.nombreProducto }}</option>
+                            </select>
+                          </div>
+                        </div>
+  
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlSelect1">Atributo 1</label>
+                            <select class="form-control">
+                              <option>Valores 1</option>
+                            </select>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- /COMPRAS-CONTENT -->
+            </div>
+
+            <div class="tab-pane fade" id="inventario" role="tabpanel" aria-labelledby="inventario-tab">-inventario content-</div>
           </div>
 
-        
-          
-            <div class="row">
-              <form>
-                <div class="form-group">
-                  <label for="formGroupExampleInput">Nombre del Producto</label>
-                  <input @keyup="findProduct" v-model="buscarNombreProducto" type="text" class="form-control" placeholder="Buscar...">
-                </div>
-              </form>
-            </div>
-            <!-- VISTA UNO -->
-            <div class="row">
-              <!-- producto REGISTRADO -->
-              <ul v-if="productoEnRegistroDePlantillas">
-                <li v-for="(producto, index) in nombreDeProductosRegistrados" :key="index">
-                  <a href="#" @click.prevent="verProductoRegistrado(producto)">
-                    Ver <strong>{{ producto.nombreProducto }}</strong>
-                  </a>
-                </li>
-              </ul>
-              <!-- /producto REGISTRADO -->
-              <!-- producto NUEVO -->
-              <div v-else-if="!productoEnRegistroDePlantillas && buscarNombreProducto.length > 2">
-                <a @click.prevent="verProductoNuevo" href="#">
-                  <p>Registrar <strong>{{ buscarNombreProducto }}</strong> como nuevo nombre de producto</p>
-                </a>
-              </div>
-              <!-- /producto NUEVO -->
-            </div>
-            <!-- /VISTA UNO -->
-            
 
-            <!-- VISTA DOS -->
-            <div class="row">
-              <div class="col-md-10 offset-md-1 text-center">
-                <!-- PRODUCTO NUEVO -->
-                <form v-if="agregarNuevoNombreDeProducto">
-                  <div class="form-group text-center">
-                    <label class="text-center">Nuevo Nombre del Producto</label>
-                    <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
-                  </div>
-                  <h5 class="text-center">Atributos</h5>
-                  <div class="form-group text-center">
-                    <label class="sr-only">Nombre del Atributo Nuevo</label>
-                    <div class="input-group mb-2">
-                      <input v-model="newAtributo.nombre" type="text" class="form-control" placeholder="Nuevo Atributo...">
-                      <div class="input-group-append">
-                        <button :disabled="atributoNoValidoParaSerAgregado" @click="handleNewAtributo" class="input-group-text btn btn-outline-success">
-                          <i class="fa fa-plus"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <small v-if="atributoNoValidoParaSerAgregado" class="text-danger">El Atributo {{ newAtributo.nombre }} no es válido...</small>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-col" v-for="(atributo, index) in newProducto.atributos" :key="index">
-                      <!-- TARJETAS - producto registrado -->
-                      <tarjeta-de-atributo 
-                        :atributo="atributo"
-                        :remove-atributo="removeAtributo"
-                        @new-valor="handleNewValor"
-                        @remove-valor="removeIncomingValue"
-                      />
-                      <!-- /TARJETAS - producto registrado -->
-                    </div>
-                  </div>
-
-                  
-                </form>
-                <!-- /PRODUCTO NUEVO -->
-  
-                <!-- PRODUCTO REGISTRADO -->
-                <form v-else-if="agregarNombreDeProductoExistente">
-                  <div class="form-group text-center">
-                    <label class="sr-only">Nombre del Atributo Nuevo</label>
-                    <div class="input-group mb-2">
-                      <input v-model="newProducto.nombreProducto" type="text" class="form-control text-center" readonly>
-                      <div class="input-group-append">
-                        <a href="#" class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i></a>
-                        <a @click="removeProductNameRegistered(newProducto.nombreProducto)" href="#" class="btn btn-outline-danger btn-sm"><i class="fas fa-times-circle"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group text-center">
-                    <label class="sr-only">Nombre del Atributo Nuevo</label>
-                    <div class="input-group mb-2">
-                      <input v-model="newAtributo.nombre" type="text" class="form-control" placeholder="Nuevo Atributo...">
-                      <div class="input-group-append">
-                        <button :disabled="atributoNoValidoParaSerAgregado" @click="handleNewAtributo" class="input-group-text btn btn-outline-success">
-                          <i class="fa fa-plus"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <small v-if="atributoNoValidoParaSerAgregado" class="text-danger">El Atributo {{ newAtributo.nombre }} no es válido...</small>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-col" v-for="(atributo, index) in newProducto.atributos" :key="index">
-                      <!-- TARJETAS - producto registrado -->
-                      <tarjeta-de-atributo 
-                        :atributo="atributo"
-                        :remove-atributo="removeAtributo"
-                        @new-valor="handleNewValor"
-                        @remove-valor="removeIncomingValue"
-                      />
-                      <!-- /TARJETAS - producto registrado -->
-                    </div>
-                  </div>
-
-
-                  
-                </form>
-                <!-- /PRODUCTO REGISTRADO -->
-              </div>
-            </div>
-            <!-- /VISTA DOS -->
 
             
 
