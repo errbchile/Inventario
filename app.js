@@ -143,7 +143,10 @@ const appVue = new Vue({
          productoSeleccionadoParaComprar: "",
          cantidadItemsEnCompra: null,
          montoTotalPagado: null,
+         costoPorUnidad: null,
       },
+
+      comprasRegistradas: [],
 
    },
 
@@ -252,8 +255,20 @@ const appVue = new Vue({
          return response;
       },
 
-      handleCompraRealizada(){
-         console.log(this.formCompra);
+      handleNuevaCompra(){
+         let nuevaCompra = {
+            ...this.formCompra,
+            id: Date.now(),
+            fecha: new Date(),
+            status: 'Pendiente'
+         }
+         this.comprasRegistradas.push(nuevaCompra);
+         this.formCompra = {
+            productoSeleccionadoParaComprar: "",
+            cantidadItemsEnCompra: null,
+            montoTotalPagado: null,
+            costoPorUnidad: null,
+         };
       }
    }, // end methods
 
@@ -285,6 +300,7 @@ const appVue = new Vue({
          if ( this.formCompra.cantidadItemsEnCompra !== null && this.formCompra.montoTotalPagado !== null ) {
             response = ( parseFloat(this.formCompra.montoTotalPagado) / parseFloat(this.formCompra.cantidadItemsEnCompra) ).toFixed(2);
          }
+         this.formCompra.costoPorUnidad = response;
          return response;
       }
    }
