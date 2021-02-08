@@ -505,7 +505,7 @@
                         <div class="col">
                           <div class="form-group">
                             <label for="exampleFormControlSelect1">Selecciona el Producto:</label>
-                            <select class="form-control">
+                            <select v-model="formCompra.productoSeleccionadoParaComprar" class="form-control" required>
                               <option value="">--Seleccione--</option>
                               <option v-for="(producto, index) in registroDePlantillas" 
                                 :value="producto.nombreProducto"
@@ -513,16 +513,46 @@
                             </select>
                           </div>
                         </div>
+                      </div>
+                      <div class="row" v-for="(atributo, index) in atributosAMostrar" :key="atributo.nombre">
   
                         <div class="col">
                           <div class="form-group">
-                            <label for="exampleFormControlSelect1">Atributo 1</label>
-                            <select class="form-control">
-                              <option>Valores 1</option>
+                            <label>{{ atributo.nombre }}</label>
+                            <select v-model="formCompra[atributo.nombre]" class="form-control" required>
+                              <option :value="valor" v-for="(valor, pos) in atributo.valores">{{ valor }}</option>
                             </select>
                           </div>
                         </div>
-
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label>Cantidad</label>
+                            <input v-model="formCompra.cantidadItemsEnCompra" type="number" class="form-control" required>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label>Monto Total Pagado</label>
+                            <input v-model="formCompra.montoTotalPagado" type="number" class="form-control" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label>Monto Unitario (c/u)</label>
+                            <input v-model="costoUnitario" type="number" class="form-control" readonly>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <button @click="handleCompraRealizada" class="btn btn-outline-success">RegistrarCompra</button>
+                          </div>
+                        </div>
                       </div>
                     </form>
                   </div>

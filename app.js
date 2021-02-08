@@ -139,6 +139,12 @@ const appVue = new Vue({
       agregarNombreDeProductoExistente: false,
       atributoNoValidoParaSerAgregado: false,
 
+      formCompra: {
+         productoSeleccionadoParaComprar: "",
+         cantidadItemsEnCompra: null,
+         montoTotalPagado: null,
+      },
+
    },
 
    methods: {
@@ -237,6 +243,18 @@ const appVue = new Vue({
          };
          this.agregarNombreDeProductoExistente = false;
       },
+
+      validarComprarRealizada(){
+         let response = false;
+         if (condition) {
+            
+         }
+         return response;
+      },
+
+      handleCompraRealizada(){
+         console.log(this.formCompra);
+      }
    }, // end methods
 
 
@@ -249,6 +267,26 @@ const appVue = new Vue({
             return producto;
          })
       }
-   } // end watch
+   }, // end watch
+
+   computed: {
+      atributosAMostrar(){
+         let response = [];
+         if (this.formCompra.productoSeleccionadoParaComprar === "") {
+            return [];
+         }
+         let producto = this.registroDePlantillas.filter(producto => producto.nombreProducto === this.formCompra.productoSeleccionadoParaComprar);
+         response = producto.map(producto => producto.atributos);
+         return response[0];
+      },
+
+      costoUnitario(){
+         let response = null;
+         if ( this.formCompra.cantidadItemsEnCompra !== null && this.formCompra.montoTotalPagado !== null ) {
+            response = ( parseFloat(this.formCompra.montoTotalPagado) / parseFloat(this.formCompra.cantidadItemsEnCompra) ).toFixed(2);
+         }
+         return response;
+      }
+   }
 
 })
