@@ -519,7 +519,7 @@
                         <div class="col">
                           <div class="form-group">
                             <label>{{ atributo.nombre }}</label>
-                            <select v-model="formCompra[atributo.nombre]" class="form-control" required>
+                            <select v-model="formCompra.atributos[atributo.nombre]" class="form-control" required>
                               <option :value="valor" v-for="(valor, pos) in atributo.valores">{{ valor }}</option>
                             </select>
                           </div>
@@ -599,7 +599,11 @@
                       <tr v-for="(compra, index) in comprasRegistradas">
                         <td>{{ compra.id }}</td>
                         <td>{{ compra.productoSeleccionadoParaComprar }}</td>
-                        <td>Atributos</td>
+                        <td>
+                          <ul v-for="(valor, atributo) in compra.atributos">
+                            <li>{{ atributo }}: {{ valor }}</li>
+                          </ul>
+                        </td>
                         <td>{{ compra.cantidadItemsEnCompra }}</td>
                         <td>{{ compra.montoTotalPagado }}</td>
                         <td>{{ compra.costoPorUnidad }}</td>

@@ -144,6 +144,7 @@ const appVue = new Vue({
          cantidadItemsEnCompra: null,
          montoTotalPagado: null,
          costoPorUnidad: null,
+         atributos: {}
       },
 
       comprasRegistradas: [],
@@ -259,7 +260,7 @@ const appVue = new Vue({
          let nuevaCompra = {
             ...this.formCompra,
             id: Date.now(),
-            fecha: new Date(),
+            fecha: new Date().toLocaleString(),
             status: 'Pendiente'
          }
          this.comprasRegistradas.push(nuevaCompra);
@@ -268,6 +269,7 @@ const appVue = new Vue({
             cantidadItemsEnCompra: null,
             montoTotalPagado: null,
             costoPorUnidad: null,
+            atributos: {}
          };
       },
 
